@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.navigation.Navigation
+import kotlin.random.Random
+import kotlin.random.nextInt
 
 /**
  * A simple [Fragment] subclass.
@@ -34,7 +36,26 @@ class GameFragment : Fragment() {
         }
         val txtNumber1 = view.findViewById<TextView>(R.id.txtNumber1)
         val txtNumber2 = view.findViewById<TextView>(R.id.txtNumber2)
+        txtNumber1.text = Random.nextInt(20).toString()
+        txtNumber2.text = Random.nextInt(20).toString()
+        var point = 0
 
+        val btnSubmit = view.findViewById<Button>(R.id.btnSubmit)
+        btnSubmit.setOnClickListener {
+            val txtAnswer = view.findViewById<TextView>(R.id.txtAnswer)
+            val answer = Integer.parseInt(txtAnswer.text.toString())
+            val finAnswer = Integer.parseInt(txtNumber1.text.toString()) + Integer.parseInt(txtNumber2.text.toString())
+            if (answer == finAnswer){
+                txtNumber1.text = Random.nextInt(20).toString()
+                txtNumber2.text = Random.nextInt(20).toString()
+                point += 1
+            }
+            else{
+                val totalPoint = point.toString()
+                val actionPoint = GameFragmentDirections.actionResultFragment(totalPoint.toString())
+                Navigation.findNavController(it).navigate(actionPoint)
+            }
+        }
     }
 
 }
